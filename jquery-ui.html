@@ -1,3 +1,37 @@
+<?php
+session_start();
+include $_SESSION['getcwd']."/include_files/writelog.php";
+include $_SESSION['getcwd']."/include_files/xml_load.php";
+include $_SESSION['getcwd']."/include_files/db_connect.php";
+include $_SESSION['getcwd']."/include_files/htmlprint.php";
+include $_SESSION['getcwd']."/include_files/checkCategory.php";
+writelog("Visited Upload Index");
+//variables for uploadhandler. differ between uploading path of catalogs or uploading path of photos etc.
+if($_GET['upload']=="catalogs"){
+    $_SESSION['galleryCategory'] = "catalogs";
+}
+if($_GET['upload']=="photos"){
+    $_SESSION['galleryCategory'] = "photos";
+}
+if ($_SESSION["login"] != 1)
+    {
+        echo '<meta http-equiv="refresh" content="0; URL='.$_SESSION['logoff_page']."c=".$_SESSION['category']."&id=".$_SESSION['primarykey'].'">';
+        exit;
+    }
+$urlParam = NULL;
+//some urls cant be transferred with ? and & letters
+//if(filter_input( INPUT_GET, 'upload', FILTER_SANITIZE_URL) == $_SESSION['galleryCategory']){
+//    $_SESSION['urlParamCatalogs'] = "?login=true&upload=".$_SESSION['galleryCategory'];
+//}
+checkCategory();
+$now = time();
+include $_SESSION['getcwd']."/include_files/sessionTimeout.php";
+$var = $now + 60* intval($adminfields->session_logoff);
+$now_db = date('Y-m-d H:i:s', $var);
+mysqli_query($con,"UPDATE login_usernamen SET active='$now_db' WHERE id=".$_SESSION['userid']);
+?>
+
+
 <!DOCTYPE HTML>
 <!--
 /*
@@ -18,13 +52,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <![endif]-->
 <meta charset="utf-8">
-<title>jQuery File Upload Demo - jQuery UI version</title>
+<title><?php echo $_SESSION['app_name'];?> File Upload</title>
 <meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bars, validation and preview images, audio and video for jQuery. Supports cross-domain, chunked and resumable file uploads and client-side image resizing. Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- jQuery UI styles -->
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/dark-hive/jquery-ui.css" id="theme">
 <!-- Demo styles -->
 <link rel="stylesheet" href="css/demo.css">
+<!-- Generic page styles -->
+<link rel="stylesheet" href="css/style.css?<?=filemtime('css/style.css');?>">
 <!--[if lte IE 8]>
 <link rel="stylesheet" href="css/demo-ie8.css">
 <![endif]-->
@@ -246,5 +282,14 @@ $('#theme-switcher').change(function () {
 <!--[if (gte IE 8)&(lt IE 10)]>
 <script src="js/cors/jquery.xdr-transport.js"></script>
 <![endif]-->
+<a href="
+    <?php
+ session_start();
+ //echo $_SESSION['server_name'].'/Basis.php?c='.$_SESSION['category'].'&id='.$_SESSION['primarykey'];
+ echo $_SESSION['server_name']."/Basis.php?c=".$_SESSION['category']."&id=".$_SESSION['primarykey'];
+ ?>
+   " class="button fit alt"><?php echo iconv('ISO-8859-1', 'UTF-8', htmlPrint($texts->general->back_button));?></a>
+</center>
 </body>
+<script>setTimeout(function() {window.location.href = "<?php echo $_SESSION['logoff_page'];?>";},<?php $time = 60000 * intval($adminfields->session_logoff); echo ''.$time; ?>);</script>
 </html>

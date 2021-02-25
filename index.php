@@ -78,12 +78,12 @@ mysqli_query($con,"UPDATE login_usernamen SET active='$now_db' WHERE id=".$_SESS
 <!-- Bootstrap styles -->
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <!-- Generic page styles -->
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?<?=filemtime('css/style.css');?>">
 <!-- blueimp Gallery styles -->
-<link rel="stylesheet" href="css/Gallery/blueimp-gallery.min.css">
+<link rel="stylesheet" href="css/Gallery/blueimp-gallery.min.css?<?=filemtime('css/Gallery/blueimp-gallery.min.css');?>">
 <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-<link rel="stylesheet" href="css/jquery.fileupload.css">
-<link rel="stylesheet" href="css/jquery.fileupload-ui.css">
+<link rel="stylesheet" href="css/jquery.fileupload.css?<?=filemtime('css/jquery.fileupload.css');?>">
+<link rel="stylesheet" href="css/jquery.fileupload-ui.css?<?=filemtime('css/jquery.fileupload-ui.css');?>">
 <!-- <link rel="stylesheet" href="../css/style.css"> -->
 <style media="screen">
 div.popup {
@@ -306,7 +306,7 @@ div.popupContent {
 <!-- The File Upload user interface plugin -->
 <script src="js/jquery.fileupload-ui.js"></script>
 <!-- The main application script -->
-<script src="js/main.js"></script>
+<script src="js/main.js?<?=filemtime('js/main.js');?>"></script>
 
 
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
