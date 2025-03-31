@@ -128,10 +128,10 @@
             options.processQueue = processQueue;
         },
 
-        // Returns the number of files currently in the processsing queue:
-        processing: function () {
-            return this._processing;
-        },
+    // Returns the number of files currently in the processing queue:
+    processing: function () {
+      return this._processing;
+    },
 
         // Processes the files given as files property of the data parameter,
         // returns a Promise object that allows to bind callbacks:

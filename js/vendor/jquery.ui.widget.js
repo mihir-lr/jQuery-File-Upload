@@ -424,19 +424,22 @@ $.Widget.prototype = {
 			this.bindings = this.bindings.add( element );
 		}
 
-		$.each( handlers, function( event, handler ) {
-			function handlerProxy() {
-				// allow widgets to customize the disabled handling
-				// - disabled as an array instead of boolean
-				// - disabled class as method for disabling individual parts
-				if ( !suppressDisabledCheck &&
-						( instance.options.disabled === true ||
-							$( this ).hasClass( "ui-state-disabled" ) ) ) {
-					return;
-				}
-				return ( typeof handler === "string" ? instance[ handler ] : handler )
-					.apply( instance, arguments );
-			}
+      $.each(handlers, function (event, handler) {
+        function handlerProxy() {
+          // Allow widgets to customize the disabled handling
+          // - disabled as an array instead of boolean
+          // - disabled class as method for disabling individual parts
+          if (
+            !suppressDisabledCheck &&
+            (instance.options.disabled === true ||
+              $(this).hasClass('ui-state-disabled'))
+          ) {
+            return;
+          }
+          return (
+            typeof handler === 'string' ? instance[handler] : handler
+          ).apply(instance, arguments);
+        }
 
 			// copy the guid so direct unbinding works
 			if ( typeof handler !== "string" ) {
@@ -466,14 +469,15 @@ $.Widget.prototype = {
 		this.hoverable = $( this.hoverable.not( element ).get() );
 	},
 
-	_delay: function( handler, delay ) {
-		function handlerProxy() {
-			return ( typeof handler === "string" ? instance[ handler ] : handler )
-				.apply( instance, arguments );
-		}
-		var instance = this;
-		return setTimeout( handlerProxy, delay || 0 );
-	},
+    _delay: function (handler, delay) {
+      var instance = this;
+      function handlerProxy() {
+        return (
+          typeof handler === 'string' ? instance[handler] : handler
+        ).apply(instance, arguments);
+      }
+      return setTimeout(handlerProxy, delay || 0);
+    },
 
 	_hoverable: function( element ) {
 		this.hoverable = this.hoverable.add( element );
@@ -503,14 +507,15 @@ $.Widget.prototype = {
 		var prop, orig,
 			callback = this.options[ type ];
 
-		data = data || {};
-		event = $.Event( event );
-		event.type = ( type === this.widgetEventPrefix ?
-			type :
-			this.widgetEventPrefix + type ).toLowerCase();
-		// the original event may come from any element
-		// so we need to reset the target on the new event
-		event.target = this.element[ 0 ];
+      data = data || {};
+      event = $.Event(event);
+      event.type = (
+        type === this.widgetEventPrefix ? type : this.widgetEventPrefix + type
+      ).toLowerCase();
+
+      // The original event may come from any element
+      // so we need to reset the target on the new event
+      event.target = this.element[0];
 
 		// copy original event properties over to the new event
 		orig = event.originalEvent;
